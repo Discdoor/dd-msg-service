@@ -19,6 +19,22 @@ export class ChannelManager {
     }
 
     /**
+     * Checks if the specified channel exists.
+     * @param id The ID of the channel to check for.
+     */
+    async channelExists(id: string) {
+        return this.getChannel(id) != null;
+    }
+
+    /**
+     * Gets a channel by ID.
+     * @param id The ID of the channel to get.
+     */
+    async getChannel(id: string): Promise<Channel | null> {
+        return await this.col.findOne<Channel>({ id });
+    }
+
+    /**
      * Finds a DM.
      * @param senderId The user ID of the sender.
      * @param receiverId The user ID of the receiver.

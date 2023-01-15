@@ -29,6 +29,9 @@ app.get('/messages/:channelId/:page', async (req: Request, res: Response) => {
             page: { type: "string" }
         }, req.params);
 
+        if(!await chMgr.channelExists(req.params.channelId))
+            throw new Error("Channel does not exist.");
+
         const pageNo = parseInt(req.params.page);
         sendResponseObject(res, 200, constructResponseObject(true, "", await msgMgr.getMessages(req.params.channelId, pageNo)));
     } catch(e: Error | any) {
@@ -52,7 +55,69 @@ app.post('/messages/:channelId', async (req: Request, res: Response) => {
             attachments: { type: 'object', optional: true }
         }, req.body);
 
+        if(!await chMgr.channelExists(req.params.channelId))
+            throw new Error("Channel does not exist.");
+
         sendResponseObject(res, 200, constructResponseObject(true, "", await msgMgr.placeMessage(req.body.authorId, req.params.channelId, req.body.content, req.body.attachments ?? [])));
+    } catch(e: Error | any) {
+        sendResponseObject(res, 400, constructResponseObject(false, e.message || ""));
+    }
+});
+
+/*
+Deletes a message for the specified channel
+*/
+app.delete('/messages/:channelId/:messageId', async (req: Request, res: Response) => {
+    try {
+        // Place a message
+        validateSchema({
+            channelId: { type: "string" },
+            messageId: { type: "string" }
+        }, req.params);
+
+        // Check if channel exists
+        if(!await chMgr.channelExists(req.params.channelId))
+            throw new Error("Channel does not exist.");
+
+        const result = await msgMgr.removeMessage(req.params.messageId);
+        sendResponseObject(res, 200, constructResponseObject(result, ""));
+    } catch(e: Error | any) {
+        sendResponseObject(res, 400, constructResponseObject(false, e.message || ""));
+    }
+});
+
+// Channel routes
+/*
+Gets the specified channel.
+*/
+app.get('/channels/:id', async (req: Request, res: Response) => {
+    try {
+        // Get messages
+        validateSchema({
+            id: { type: "string" },
+        }, req.params);
+
+        if(!await chMgr.channelExists(req.params.id))
+            throw new Error("Channel does not exist.");
+
+        sendResponseObject(res, 200, constructResponseObject(true, "", await chMgr.getChannel(req.params.id)));
+    } catch(e: Error | any) {
+        sendResponseObject(res, 400, constructResponseObject(false, e.message || ""));
+    }
+});
+
+/*
+Starts a DM between two users.
+*/
+app.post('/channels/dm/:user1/:user2', async (req: Request, res: Response) => {
+    try {
+        // Get messages
+        validateSchema({
+            user1: { type: "string" },
+            user2: { type: "string" }
+        }, req.params);
+
+        sendResponseObject(res, 200, constructResponseObject(true, "", await chMgr.createDM(req.params.user1, req.params.user2)));
     } catch(e: Error | any) {
         sendResponseObject(res, 400, constructResponseObject(false, e.message || ""));
     }

@@ -4,7 +4,7 @@ import { Message } from "../types/Message";
 import { reflect } from 'libdd-node';
 import { EntityId } from "../util/Id";
 const { createShallowView } = reflect;
-const config = require('../../data/config.json');
+import config from '../../data/config.json';
 
 export class MessageManager {
     /**
@@ -35,7 +35,7 @@ export class MessageManager {
      */
     async getMessages(channelId: string, page = 0) {
         const limit = config.limits.messaging.pagination;
-        return (await this.col.find<Message>({ channelId }).skip(page * limit).limit(limit).toArray()).map(x => createShallowView(x, []));
+        return (await this.col.find<Message>({ channelId }).skip(page * limit).limit(limit).toArray()).map(x => createShallowView(x, [])).reverse();
     }
 
     /**
