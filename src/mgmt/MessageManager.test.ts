@@ -13,7 +13,7 @@ describe('message manager tests', ()=> {
     /**
      * Channel manager instance.
      */
-    let relMgr: MessageManager;
+    let msgMgr: MessageManager;
 
     /**
      * DB connection.
@@ -31,7 +31,7 @@ describe('message manager tests', ()=> {
         
         let db: Db = await connection.db('discdoor');
         let col: Collection = db.collection('messages');
-        relMgr = new MessageManager(col);
+        msgMgr = new MessageManager(col);
     });
 
     test('dummy', ()=>expect(1).toBe(1));

@@ -56,6 +56,11 @@ export interface Channel {
      * The owning guild.
      */
     guildId: string;
+
+    /**
+     * The channel type.
+     */
+    type: ChannelType;
 }
 
 /**

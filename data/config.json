@@ -1,0 +1,23 @@
+{
+    "limits": {
+        "channel": {
+            "topicNameLength": 240
+        },
+        "voiceChannel": {
+            "maxMembers": 30
+        },
+        "guild": {
+            "members": 10000,
+            "channels": 200,
+            "nameLength": 240
+        },
+        "groupDm": {
+            "participants": 10
+        },
+        "messaging": {
+            "pagination": 50,
+            "contentLength": 1024,
+            "attachments": 2
+        }
+    }
+}

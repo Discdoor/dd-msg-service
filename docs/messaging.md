@@ -14,6 +14,12 @@ A channel can be:
  - A guild DM (type 2)
  - A voice channel (type 3)
 
+## Limits
+
+Limits such as message length, max number of group participants, max number of channels in guild, etc. are all defined in [`data/config.json`](../data/config.json).
+
+Please only change these limits if you know what you are doing - the default ones have been optimally tuned for a medium-sized user base.
+
 ## Models
 
 All models have been properly declared in typescript and have been commented.
