@@ -26,3 +26,5 @@ All models have been properly declared in typescript and have been commented.
 
 Model list:
  - [Channel](../src/types/Channel.ts)
+ - [Message](../src/types/Message.ts)
+ - [Attachment](../src/types/Attachment.ts)
