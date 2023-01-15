@@ -1,0 +1,7 @@
+# node stuff
+node_modules
+docs
+*.md
+*.example
+.env
+.github
