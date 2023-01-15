@@ -25,7 +25,12 @@ export class MessageManager {
      * @param id The ID of the message to get.
      */
     async getMessage(id: string): Promise<Message | null> {
-        return await this.col.findOne<Message>({ id });
+        const msg = await this.col.findOne<Message>({ id });
+
+        if(!msg)
+            return null;
+
+        return createShallowView(msg, []);
     }
 
     /**

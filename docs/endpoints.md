@@ -109,7 +109,7 @@ Example Response:
 
 ----
 
-## `GET` /channels/view/`:id:`
+## `GET` /channels/`:id:`
 Gets the specified channel object.
 
 Parameters:

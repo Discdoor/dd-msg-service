@@ -31,7 +31,12 @@ export class ChannelManager {
      * @param id The ID of the channel to get.
      */
     async getChannel(id: string): Promise<Channel | null> {
-        return await this.col.findOne<Channel>({ id });
+        const ch = await this.col.findOne<Channel>({ id });
+
+        if(!ch)
+            return null;
+
+        return createShallowView(ch, []);
     }
 
     /**
