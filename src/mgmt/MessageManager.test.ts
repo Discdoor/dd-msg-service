@@ -132,7 +132,7 @@ describe('message manager tests', ()=> {
         expect(messages.length).toBe(1);
     });
 
-    // test 6: get messages.
+    // test 7: get messages.
     test('ensure message retrieval follows pagination limit', async ()=>{
         // Push some sample messages 3.5x over the pagination limit
         for(let x = 0; x < ((config.limits.messaging.pagination * 3.5) | 0); x++)
@@ -141,6 +141,26 @@ describe('message manager tests', ()=> {
         // Only the page maximum should be retrieved now
         const messages = await msgMgr.getMessages(sampleChannelId);
         expect(messages.length).toBe(config.limits.messaging.pagination);
+    });
+
+    // test 8: edit message
+    test('edit message', async ()=>{
+        // push a message and retrieve it
+        let originalMessage = await msgMgr.placeMessage(sampleAuthorId, "testchannel2", `test message`, []);
+        let newMessage = await msgMgr.editMessage(originalMessage.id, "edited content");
+        expect(newMessage).toBeDefined();
+        expect(newMessage).not.toBeNull();
+        expect(newMessage?.content).toBe("edited content");
+    });
+
+    // test 9: remove message
+    test('remove message', async ()=>{
+        // push a message and retrieve it
+        let message = await msgMgr.placeMessage(sampleAuthorId, "testchannel2", `test message`, []);
+        await msgMgr.removeMessage(message.id);
+        let message2 = await msgMgr.getMessage(message.id);
+        expect(message2).toBe(null);
+        expect(message2?.content).not.toBe("edited content");
     });
 
     afterAll(async () => {
