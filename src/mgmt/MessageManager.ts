@@ -25,7 +25,7 @@ export class MessageManager {
      * @param channelId The ID of the channel to receive messages from.
      * @param page The page of message history.
      */
-    async getMessages(channelId: string, page = 1) {
+    async getMessages(channelId: string, page = 0) {
         const limit = config.limits.messaging.pagination;
         return (await this.col.find<Message>({ channelId }).skip(page * limit).limit(limit).toArray()).map(x => createShallowView(x, []));
     }
